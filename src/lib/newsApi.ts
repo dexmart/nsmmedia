@@ -15,6 +15,22 @@ export interface NewsArticle {
 }
 
 export async function getLatestNews(query: string = "football"): Promise<NewsArticle[]> {
+    const cacheKey = `news_cache_${query}`;
+    const cacheTimeKey = `news_cache_time_${query}`;
+    const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+
+    // Check if we have fresh cached data
+    try {
+        const cachedTime = localStorage.getItem(cacheTimeKey);
+        if (cachedTime && Date.now() - parseInt(cachedTime) < CACHE_DURATION) {
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
+                console.log(`[News] Using cached data for "${query}"`);
+                return JSON.parse(cached);
+            }
+        }
+    } catch { /* ignore cache read errors */ }
+
     try {
         const url = new URL(BASE_URL);
         url.searchParams.append("apikey", API_KEY);
@@ -29,13 +45,33 @@ export async function getLatestNews(query: string = "football"): Promise<NewsArt
         if (!response.ok) {
             const errorText = await response.text();
             console.error(`NewsData Error: ${response.status}`, errorText);
+            // Fall back to stale cache
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
+                console.warn(`[News] API error, using stale cache for "${query}"`);
+                return JSON.parse(cached);
+            }
             return [];
         }
 
         const data = await response.json();
-        return data.results || [];
+        const results = data.results || [];
+
+        // Save to cache
+        try {
+            localStorage.setItem(cacheKey, JSON.stringify(results));
+            localStorage.setItem(cacheTimeKey, String(Date.now()));
+        } catch { /* ignore storage full errors */ }
+
+        return results;
     } catch (error) {
         console.error("Failed to fetch news from NewsData:", error);
+        // Fall back to stale cache
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+            console.warn(`[News] Network error, using stale cache for "${query}"`);
+            return JSON.parse(cached);
+        }
         return [];
     }
 }

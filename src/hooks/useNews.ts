@@ -8,6 +8,6 @@ export function useNews(query: string = "football") {
         queryFn: async () => {
             return await getLatestNews(query);
         },
-        staleTime: 600000, // 10 minutes
+        staleTime: 1800000, // 30 minutes – matches localStorage cache duration
     });
 }
