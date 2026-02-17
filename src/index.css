@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 96%;
+    --foreground: 220 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    --primary: 152 69% 31%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 216 20% 12%;
+    --secondary-foreground: 210 20% 95%;
+
+    --muted: 210 15% 92%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 42 92% 55%;
+    --accent-foreground: 220 20% 10%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 15% 89%;
+    --input: 210 15% 89%;
+    --ring: 152 69% 31%;
+
+    --radius: 0.5rem;
+
+    /* Custom sport tokens */
+    --live: 0 72% 51%;
+    --live-foreground: 0 0% 100%;
+    --header-bg: 216 28% 7%;
+    --header-fg: 210 20% 93%;
+    --score-highlight: 152 69% 31%;
+    --confirmed: 152 69% 31%;
+    --rumor: 42 92% 55%;
+    --hwg: 262 60% 55%;
+    --medical: 200 80% 50%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Barlow Condensed', system-ui, sans-serif;
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Barlow Condensed', system-ui, sans-serif;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
